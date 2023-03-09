@@ -1,0 +1,30 @@
+{
+  "name": "pokemon-app",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "@mui/material": "^5.3.1",
+    "@reduxjs/toolkit": "1.7.1",
+    "pokenode-ts": "^1.11.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.6"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.33",
+    "@types/react-dom": "^17.0.10",
+    "@vitejs/plugin-react": "^1.0.7",
+    "typescript": "^4.4.4",
+    "vite": "^2.7.2"
+  },
+  "description": "## Task 1 We'd like to have a small frontend which lists all Pokémons which exists. Therefore, we have an [Pokémon Api](https://pokeapi.co/docs/v2#info) or a node_module [pokenode-ts](https://github.com/Gabb-c/pokenode-ts).",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC"
+}
