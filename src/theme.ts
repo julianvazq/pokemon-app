@@ -1,6 +1,5 @@
 import { createTheme } from '@mui/material/styles';
 
-// A custom theme for this app
 export const theme = createTheme({
     palette: {
         background: {
@@ -11,7 +10,9 @@ export const theme = createTheme({
             main: '#367c2b',
         },
         secondary: {
-            main: '#ffde00',
+            main: '#f2f2f2',
+            light: '#ededed',
+            dark: '#e0e0e0',
         },
         error: {
             main: '#c21020',

@@ -17,8 +17,8 @@ const PokemonCard: FunctionComponent<Props> = ({ pokemon }) => {
     const imgSrc = hovered ? frontImgSrc : backImgSrc;
 
     const backgroundColor = hovered
-        ? '#e0e0e0'
-        : theme.palette.background.paper;
+        ? theme.palette.secondary.dark
+        : theme.palette.secondary.light;
 
     return (
         <Link
@@ -42,9 +42,9 @@ const PokemonCard: FunctionComponent<Props> = ({ pokemon }) => {
                     titleTypographyProps={{
                         align: 'center',
                         component: 'h3',
+                        fontWeight: 600,
+                        textTransform: 'capitalize',
                         sx: {
-                            fontWeight: 600,
-                            textTransform: 'capitalize',
                             backgroundColor,
                         },
                     }}
