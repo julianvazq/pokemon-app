@@ -3,7 +3,6 @@
 
 // ts wrapper
 // https://github.com/Gabb-c/pokenode-ts
-import { NamedAPIResourceList, PokemonClient } from 'pokenode-ts';
+import { PokemonClient as PKClient } from 'pokenode-ts';
 
-const api = new PokemonClient();
-
+export const PokemonClient = new PKClient();
