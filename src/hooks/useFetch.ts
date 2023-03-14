@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
+import { RequestFn } from '../features/pokemon/types/apiTypes';
 
 type Props<T> = {
-    request: Promise<T> | null;
-    dispatch?: (arg: T) => void;
+    requestFn: RequestFn<T> | null;
+    onEnd?: (arg: T) => void;
 };
 
 export enum Status {
@@ -12,29 +13,33 @@ export enum Status {
     Success,
 }
 
-const useFetch = <T>({ request, dispatch }: Props<T>) => {
+const useFetch = <T>({ requestFn, onEnd }: Props<T>) => {
     const [data, setData] = useState<T | null>(null);
     const [status, setStatus] = useState<Status>(Status.Idle);
 
     useEffect(() => {
-        const fetchData = async (promise: Promise<T>) => {
+        const fetchData = async (promise: () => Promise<T>) => {
             try {
                 setStatus(Status.Fetching);
-                const data = await promise;
+                const data = await promise?.();
                 setData(data);
                 setStatus(Status.Success);
-                console.log('dispatch');
-                dispatch?.(data);
+                onEnd?.(data);
             } catch (error) {
                 setStatus(Status.Error);
+                setData(null);
                 console.log('Fetching error: ', error);
             }
         };
 
-        if (request && status !== Status.Fetching) {
-            fetchData(request);
+        if (
+            requestFn != null &&
+            typeof requestFn === 'function' &&
+            [Status.Idle, Status.Success].includes(status)
+        ) {
+            fetchData(requestFn);
         }
-    }, [request]);
+    }, [requestFn]);
 
     return { data, status };
 };

@@ -7,6 +7,7 @@ import {
     setTotalCount,
 } from '../../../app/pokemon';
 import { ExtPokemonClient } from '../../../features/pokemon/services/pokemonApi';
+import { RequestFn } from '../../../features/pokemon/types/apiTypes';
 import { PokemonList } from '../../../features/pokemon/types/pokemonTypes';
 import useFetch, { Status } from '../../../hooks/useFetch';
 import PokemonCount from '../PokemonCount';
@@ -15,8 +16,10 @@ import * as S from './styles';
 
 const POKEMON_PER_PAGE = 20;
 
-const computePokemonRequest = (offset: number) => {
-    return ExtPokemonClient.listFullPokemons(offset, POKEMON_PER_PAGE);
+const computePokemonRequest = (offset: number): RequestFn<PokemonList> => {
+    const fn = () =>
+        ExtPokemonClient.listFullPokemons(offset, POKEMON_PER_PAGE);
+    return fn;
 };
 
 const PokemonsSection = () => {
@@ -24,24 +27,25 @@ const PokemonsSection = () => {
     const { pokemons, offset, totalCount } = useAppSelector(
         (state) => state.pokemon
     );
-    const [computedPokemonsReq, setComputerPokemonsReq] =
-        useState<Promise<PokemonList> | null>(() =>
+    const [pokemonsRequestFn, setPokemonsRequestFn] =
+        useState<RequestFn<PokemonList> | null>(() =>
             /* Ensures new Pokemons are not loaded automatically if the user
             navigates to a profile page and comes back. */
-            pokemons.length ? null : computePokemonRequest(offset)
+            pokemons.length > 0 ? null : computePokemonRequest(offset)
         );
     const { status } = useFetch({
-        request: computedPokemonsReq,
-        dispatch: (data) => {
+        requestFn: pokemonsRequestFn,
+        onEnd: (data) => {
             dispatch(populatePokemons(data.results));
             dispatch(setTotalCount(data.count));
         },
     });
 
     const loadMorePokemons = () => {
-        dispatch(increaseOffsetBy(POKEMON_PER_PAGE));
         const newOffset = offset + POKEMON_PER_PAGE;
-        setComputerPokemonsReq(computePokemonRequest(newOffset));
+        const newReq = computePokemonRequest(newOffset);
+        dispatch(increaseOffsetBy(POKEMON_PER_PAGE));
+        setPokemonsRequestFn(() => newReq);
     };
 
     if (status === Status.Error) {

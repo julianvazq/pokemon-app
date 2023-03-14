@@ -6,7 +6,7 @@ export const Box = styled(MUIBox)`
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    &:first-child {
+    &:first-of-type {
         align-self: flex-start;
     }
 `;

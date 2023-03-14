@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { App } from './App';
 import { store } from './app/store';
 import { theme } from './theme';
+
 ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
