@@ -68,17 +68,6 @@ const PokemonsSection = () => {
                     onClickHandler={loadMorePokemons}
                 />
             )}
-            {/* {!allPokemonsLoaded &&
-            <>
-            ({pokemons.length > 0 && status !== Status.Fetching && (
-                <Button variant='contained' onClick={loadMorePokemons}>
-                    Load more
-                </Button>
-            )}
-            {status === Status.Fetching && (
-                <CircularProgress title='Loading...' />
-                )})
-                </> */}
         </S.Box>
     );
 };
