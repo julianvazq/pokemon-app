@@ -1,4 +1,4 @@
-import { Button, CircularProgress, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import {
@@ -10,11 +10,12 @@ import { ExtPokemonClient } from '../../../features/pokemon/services/pokemonApi'
 import { RequestFn } from '../../../features/pokemon/types/apiTypes';
 import { PokemonList } from '../../../features/pokemon/types/pokemonTypes';
 import useFetch, { Status } from '../../../hooks/useFetch';
+import LoadButton from '../../LoadButton';
 import PokemonCount from '../PokemonCount';
 import PokemonGrid from '../PokemonGrid';
 import * as S from './styles';
 
-const POKEMON_PER_PAGE = 20;
+const POKEMON_PER_PAGE = 1200;
 
 const computePokemonRequest = (offset: number): RequestFn<PokemonList> => {
     const fn = () =>
@@ -52,20 +53,32 @@ const PokemonsSection = () => {
         return <Typography>Failed to load Pokémons.</Typography>;
     }
 
+    const allPokemonsLoaded =
+        pokemons.length !== 0 && pokemons.length === totalCount;
+
     return (
         <S.Box component='section'>
             {totalCount > 0 && (
                 <PokemonCount count={pokemons.length} totalCount={totalCount} />
             )}
             <PokemonGrid pokemons={pokemons} />
-            {pokemons.length > 0 && status !== Status.Fetching && (
+            {!allPokemonsLoaded && (
+                <LoadButton
+                    loading={status === Status.Fetching}
+                    onClickHandler={loadMorePokemons}
+                />
+            )}
+            {/* {!allPokemonsLoaded &&
+            <>
+            ({pokemons.length > 0 && status !== Status.Fetching && (
                 <Button variant='contained' onClick={loadMorePokemons}>
                     Load more
                 </Button>
             )}
             {status === Status.Fetching && (
                 <CircularProgress title='Loading...' />
-            )}
+                )})
+                </> */}
         </S.Box>
     );
 };
