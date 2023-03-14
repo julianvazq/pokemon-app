@@ -10,7 +10,7 @@ import { ExtPokemonClient } from '../../../features/pokemon/services/pokemonApi'
 import { RequestFn } from '../../../features/pokemon/types/apiTypes';
 import { PokemonList } from '../../../features/pokemon/types/pokemonTypes';
 import useFetch, { Status } from '../../../hooks/useFetch';
-import LoadButton from '../../LoadButton';
+import LoadButton from '../LoadButton';
 import PokemonCount from '../PokemonCount';
 import PokemonGrid from '../PokemonGrid';
 import * as S from './styles';
