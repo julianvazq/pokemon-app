@@ -26,7 +26,7 @@ const PokemonDetails: FunctionComponent<Props> = ({ pokemon }) => {
             </Typography>
             <Grid container spacing={1}>
                 {pokemon.stats.map((s) => (
-                    <Grid item xs={12} sm={6}>
+                    <Grid key={s.stat.name} item xs={12} sm={6}>
                         <Typography textTransform='capitalize' fontWeight={600}>
                             {s.stat.name}
                         </Typography>

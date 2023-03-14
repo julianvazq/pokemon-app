@@ -3,7 +3,8 @@
 
 // ts wrapper
 // https://github.com/Gabb-c/pokenode-ts
-import { NamedAPIResource, Pokemon, PokemonClient } from 'pokenode-ts';
+import { NamedAPIResource, PokemonClient } from 'pokenode-ts';
+import { PokemonList } from '../types/pokemonTypes';
 
 const listPokemonsByName = (pokemonNames: string[]) => {
     return Promise.all(
@@ -23,11 +24,21 @@ const listPokemonsByName = (pokemonNames: string[]) => {
 const listFullPokemons = async (
     offset?: number | undefined,
     limit?: number | undefined
-): Promise<Pokemon[]> => {
-    const res = await ExtPokemonClient.listPokemons(offset, limit);
-    const pokemonNames = (res.results as NamedAPIResource[]).map((p) => p.name);
-    const pokemons = listPokemonsByName(pokemonNames);
-    return pokemons;
+): Promise<PokemonList> => {
+    /* Get pokemon names and pagination data */
+    const { count, next, previous, results } =
+        await ExtPokemonClient.listPokemons(offset, limit);
+    const pokemonNames = (results as NamedAPIResource[]).map((p) => p.name);
+    /* Get full pokemon data and merge with pagination data */
+    return listPokemonsByName(pokemonNames).then(
+        (pokemons) =>
+            ({
+                count,
+                next,
+                previous,
+                results: pokemons,
+            } as PokemonList)
+    );
 };
 
 class PKClient extends PokemonClient {

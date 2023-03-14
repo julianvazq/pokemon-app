@@ -7,7 +7,7 @@ const AppHeader = () => {
     const isIndex = pathname === '/';
     const title = 'Shiny Pokédex';
     const subtitle =
-        'Hover over a Pokémon for it to greet you, and click to view its Pokédex entry.';
+        'Hover over a Pokémon for it to turn around and greet you, and click to view its Pokédex entry.';
 
     return (
         <S.Card>

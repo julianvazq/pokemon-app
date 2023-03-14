@@ -6,15 +6,22 @@ import { theme } from '../../../theme';
 
 type Props = {
     pokemon: Pokemon;
+    hasTurned: boolean;
+    onTurnHandler: () => void;
 };
 
-const PokemonCard: FunctionComponent<Props> = ({ pokemon }) => {
+const PokemonCard: FunctionComponent<Props> = ({
+    pokemon,
+    hasTurned,
+    onTurnHandler,
+}) => {
     const [hovered, setHovered] = useState<boolean>(false);
+
     const frontImgSrc =
         pokemon.sprites.front_shiny || pokemon.sprites.front_default;
     const backImgSrc =
         pokemon.sprites.back_shiny || pokemon.sprites.back_default;
-    const imgSrc = hovered ? frontImgSrc : backImgSrc;
+    const imgSrc = hasTurned ? frontImgSrc : backImgSrc;
 
     const backgroundColor = hovered
         ? theme.palette.secondary.dark
@@ -24,16 +31,17 @@ const PokemonCard: FunctionComponent<Props> = ({ pokemon }) => {
         <Link
             to={`/pokemon/${pokemon.name}`}
             style={{ textDecoration: 'none' }}
+            onMouseEnter={() => {
+                onTurnHandler();
+                setHovered(true);
+            }}
+            onMouseLeave={() => setHovered(false)}
         >
-            <Card
-                onMouseEnter={() => setHovered(true)}
-                onMouseLeave={() => setHovered(false)}
-                style={{ backgroundColor }}
-            >
+            <Card sx={{ backgroundColor }}>
                 <CardMedia
                     component='img'
                     height='100%'
-                    image={imgSrc!}
+                    image={imgSrc! || frontImgSrc!}
                     alt={pokemon.name}
                     sx={{ backgroundColor: '#ffffff' }}
                 />

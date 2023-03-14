@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 type Props<T> = {
-    promise: Promise<T> | null;
+    request: Promise<T> | null;
     dispatch?: (arg: T) => void;
 };
 
@@ -12,7 +12,7 @@ export enum Status {
     Success,
 }
 
-const useFetch = <T>({ promise, dispatch }: Props<T>) => {
+const useFetch = <T>({ request, dispatch }: Props<T>) => {
     const [data, setData] = useState<T | null>(null);
     const [status, setStatus] = useState<Status>(Status.Idle);
 
@@ -23,6 +23,7 @@ const useFetch = <T>({ promise, dispatch }: Props<T>) => {
                 const data = await promise;
                 setData(data);
                 setStatus(Status.Success);
+                console.log('dispatch');
                 dispatch?.(data);
             } catch (error) {
                 setStatus(Status.Error);
@@ -30,10 +31,10 @@ const useFetch = <T>({ promise, dispatch }: Props<T>) => {
             }
         };
 
-        if (promise && data == null && status !== Status.Success) {
-            fetchData(promise);
+        if (request && status !== Status.Fetching) {
+            fetchData(request);
         }
-    }, [promise, dispatch]);
+    }, [request]);
 
     return { data, status };
 };

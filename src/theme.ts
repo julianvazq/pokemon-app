@@ -7,7 +7,7 @@ export const theme = createTheme({
             paper: '#ededed',
         },
         primary: {
-            main: '#367c2b',
+            main: '#5c379b',
         },
         secondary: {
             main: '#f2f2f2',
