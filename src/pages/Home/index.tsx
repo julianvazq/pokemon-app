@@ -1,34 +1,27 @@
-import { NamedAPIResource } from 'pokenode-ts';
-import { useEffect } from 'react';
+import { Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { populatePokemons } from '../../app/pokemon';
-import { PokemonClient } from '../../features/pokemon/services/pokemonApi';
+import { ExtPokemonClient } from '../../features/pokemon/services/pokemonApi';
+import useFetch, { Status } from '../../hooks/useFetch';
 import PokemonGrid from './PokemonGrid';
+
+const listFullPokemons = ExtPokemonClient.listFullPokemons(undefined, 20);
 
 const Home = () => {
     const { pokemons } = useAppSelector((state) => state.pokemon);
     const dispatch = useAppDispatch();
+    const { status } = useFetch({
+        promise: listFullPokemons,
+        dispatch: (data) => dispatch(populatePokemons(data)),
+    });
 
-    useEffect(() => {
-        const fetchPokemons = async () => {
-            try {
-                const res = await PokemonClient.listPokemons(undefined, 20);
-                console.log('pokemons', res);
-                const pokemonsBasic = res.results as NamedAPIResource[];
-                const pokemonsFull = await Promise.all(
-                    pokemonsBasic.map(
-                        async (pokemon) =>
-                            await PokemonClient.getPokemonByName(pokemon.name)
-                    )
-                );
-                console.log('pokemonsFull', pokemonsFull);
-                dispatch(populatePokemons(pokemonsFull));
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        fetchPokemons();
-    }, []);
+    if (status === Status.Idle || status === Status.Fetching) {
+        return <Typography>Loading Pokémons...</Typography>;
+    }
+
+    if (status === Status.Error) {
+        return <Typography>Failed to load Pokémons.</Typography>;
+    }
 
     return (
         <>
