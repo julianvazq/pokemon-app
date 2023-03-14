@@ -15,7 +15,7 @@ import PokemonCount from '../PokemonCount';
 import PokemonGrid from '../PokemonGrid';
 import * as S from './styles';
 
-const POKEMON_PER_PAGE = 1200;
+const POKEMON_PER_PAGE = 20;
 
 const computePokemonRequest = (offset: number): RequestFn<PokemonList> => {
     const fn = () =>

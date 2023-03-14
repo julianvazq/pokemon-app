@@ -18,9 +18,22 @@ const PokemonGrid: FunctionComponent<Props> = ({ pokemons }) => {
     };
 
     return (
-        <Grid container spacing={2}>
+        <Grid
+            container
+            spacing={2}
+            component='ol'
+            sx={{ listStyle: 'none', padding: 0 }}
+        >
             {pokemons.map((p) => (
-                <Grid key={p.name} xs={12} sm={6} md={3} lg={2} item>
+                <Grid
+                    key={p.name}
+                    xs={12}
+                    sm={6}
+                    md={3}
+                    lg={2}
+                    component='li'
+                    item
+                >
                     <PokemonCard
                         pokemon={p}
                         hasTurned={pokemonsThatTurned.includes(p.name)}
