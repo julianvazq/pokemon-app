@@ -26,8 +26,7 @@ export const pokemonSlice = createSlice({
         },
         turnPokemon: (state, action: PayloadAction<string>) => {
             state.pokemonsThatTurned = [
-                ...state.pokemonsThatTurned,
-                action.payload,
+                ...new Set([...state.pokemonsThatTurned, action.payload]),
             ];
         },
         increaseOffsetBy: (state, action: PayloadAction<number>) => {
