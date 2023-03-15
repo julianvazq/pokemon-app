@@ -22,12 +22,12 @@ const PokemonPage = () => {
         onEnd: (data) => setPokemon(data),
     });
 
-    if (!pokemon || status === Status.Fetching) {
-        return <Typography>Loading Pokémon...</Typography>;
-    }
-
     if (status === Status.Error) {
         return <Typography>Failed to fetch Pokémon.</Typography>;
+    }
+
+    if (!pokemon || status === Status.Fetching) {
+        return <Typography>Loading Pokémon...</Typography>;
     }
 
     return (
